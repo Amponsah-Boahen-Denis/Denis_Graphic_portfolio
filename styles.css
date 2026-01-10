@@ -1,4 +1,12 @@
 
+
+
+
+
+
+
+
+
 * {
     margin: 0;
     padding: 0;
@@ -472,6 +480,10 @@ section {
 /* Portfolio Section */
 .portfolio {
     background-color: var(--dark-secondary);
+    display: block;
+    visibility: visible;
+    opacity: 1;
+    min-height: 100px;
 }
 
 .portfolio-grid {
@@ -479,21 +491,35 @@ section {
     grid-template-columns: repeat(3, 1fr);
     gap: 0.8rem;
     width: 100%;
+    visibility: visible;
+    opacity: 1;
 }
 
 .project-card {
     background-color: var(--dark-bg);
     border-radius: 8px;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: none;
     border: 1px solid rgba(212, 175, 55, 0.1);
     cursor: pointer;
 }
 
 .project-card:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 15px 50px rgba(212, 175, 55, 0.3);
-    border-color: var(--gold);
+    transform: none;
+    box-shadow: none;
+    border-color: rgba(212, 175, 55, 0.1);
+}
+
+@media (max-width: 768px) {
+    .project-card:hover {
+        transform: none;
+        box-shadow: none;
+        border-color: rgba(212, 175, 55, 0.1);
+    }
+    
+    .project-card:hover .project-image img {
+        transform: none;
+    }
 }
 
 .project-image {
@@ -509,24 +535,24 @@ section {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: all 0.3s ease;
+    transition: none;
     display: block;
 }
 
 .project-card:hover .project-image img {
-    transform: scale(1.1);
+    transform: none;
 }
 
 .project-placeholder {
     width: 100%;
     height: 100%;
     background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 .project-card:hover .project-placeholder {
-    transform: scale(1.05);
-    background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%);
+    transform: none;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
 }
 
 .project-info {
@@ -715,19 +741,62 @@ section {
         font-size: 2rem;
     }
 
+    .portfolio {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
     .portfolio-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
+        display: grid !important;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
     
     .project-image {
         height: auto;
         min-height: 280px;
+        display: block !important;
+        visibility: visible !important;
     }
     
     .project-card {
         width: 100%;
         max-width: 100%;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    /* Remove animations on mobile for portfolio */
+    .project-card.fade-in {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+        visibility: visible !important;
+    }
+    
+    .project-card.fade-in.visible {
+        opacity: 1 !important;
+        transform: none !important;
+        visibility: visible !important;
+    }
+    
+    .project-card:hover {
+        transform: none !important;
+        box-shadow: none !important;
+    }
+    
+    .project-card:hover .project-image img {
+        transform: none !important;
+    }
+    
+    .project-image img {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
 
     .services-grid {
@@ -769,17 +838,80 @@ section {
         padding: 60px 0;
     }
     
+    .portfolio {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    .portfolio {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+        z-index: 1 !important;
+    }
+    
     .portfolio-grid {
         gap: 0.8rem;
+        display: grid !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
     }
     
     .project-image {
         min-height: 250px;
         height: auto;
+        display: block !important;
+        visibility: visible !important;
+        position: relative !important;
+    }
+    
+    /* Remove all hover effects and animations on mobile */
+    .project-card {
+        transition: none !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
     }
     
     .project-card:hover {
-        transform: translateY(-3px) scale(1.01);
+        transform: none !important;
+        box-shadow: none !important;
+        border-color: rgba(212, 175, 55, 0.1);
+    }
+    
+    .project-card:hover .project-image img {
+        transform: none !important;
+    }
+    
+    .project-image img {
+        transition: none !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+        width: 100% !important;
+        height: auto !important;
+    }
+    
+    /* Force portfolio elements to be visible - override any fade-in */
+    .portfolio *,
+    .portfolio-grid *,
+    .project-card,
+    .project-card * {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    
+    .project-card.fade-in,
+    .project-card.fade-in.visible {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+        visibility: visible !important;
     }
 }
 
@@ -793,6 +925,63 @@ section {
 .fade-in.visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* Override fade-in for portfolio on mobile - prevent any hiding */
+@media (max-width: 768px) {
+    /* Prevent fade-in from hiding portfolio elements */
+    .portfolio,
+    .portfolio *,
+    .portfolio-grid,
+    .portfolio-grid *,
+    .project-card,
+    .project-card *,
+    .project-image,
+    .project-image * {
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: block !important;
+    }
+    
+    .portfolio-grid {
+        display: grid !important;
+    }
+    
+    .portfolio .fade-in,
+    .portfolio-grid .fade-in,
+    .project-card {
+        transition: none !important;
+    }
+    
+    .project-card.fade-in,
+    .project-card.fade-in.visible {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+        visibility: visible !important;
+        display: block !important;
+    }
+    
+    .project-card:hover {
+        transform: none !important;
+        box-shadow: none !important;
+    }
+    
+    .project-card:hover .project-image img {
+        transform: none !important;
+    }
+    
+    .project-image {
+        transition: none !important;
+    }
+    
+    /* Ensure images never get hidden */
+    .project-image img {
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: block !important;
+        transition: none !important;
+    }
 }
 
 /* Lightbox Modal */
@@ -875,12 +1064,5 @@ section {
 
 .project-image img {
     cursor: pointer;
-}
-
-/* Mobile fix: prevent hero overflow from hiding the portfolio section */
-@media (max-width: 768px) {
-    .hero {
-        overflow: visible !important;
-    }
 }
 

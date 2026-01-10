@@ -38,6 +38,10 @@ const observerOptions = {
 
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
+        // Skip portfolio cards on mobile
+        if (entry.target.classList.contains('project-card') && window.innerWidth <= 768) {
+            return;
+        }
         if (entry.isIntersecting) {
             entry.target.classList.add('visible');
         }
@@ -50,13 +54,49 @@ document.querySelectorAll('section').forEach(section => {
     observer.observe(section);
 });
 
-// Observe project cards for staggered animation
-const projectCards = document.querySelectorAll('.project-card');
-projectCards.forEach((card, index) => {
-    card.style.transitionDelay = `${index * 0.1}s`;
-    card.classList.add('fade-in');
-    observer.observe(card);
-});
+// Check if mobile and handle portfolio cards accordingly
+function handlePortfolioCards() {
+    const projectCards = document.querySelectorAll('.project-card');
+    const isMobile = window.innerWidth <= 768;
+
+    if (!isMobile) {
+        projectCards.forEach((card, index) => {
+            card.style.transitionDelay = `${index * 0.1}s`;
+            card.classList.add('fade-in');
+            observer.observe(card);
+        });
+    } else {
+        // On mobile, ensure cards are immediately visible without animation
+        projectCards.forEach(card => {
+            // Remove fade-in class immediately and prevent it from being added
+            card.classList.remove('fade-in');
+            card.classList.remove('visible');
+            // Use setAttribute to force inline styles that override everything
+            card.setAttribute('style', 'opacity: 1 !important; transform: none !important; visibility: visible !important; display: block !important; transition: none !important;');
+            
+            // Also ensure images are visible with inline styles
+            const img = card.querySelector('img');
+            if (img) {
+                img.setAttribute('style', 'opacity: 1 !important; visibility: visible !important; display: block !important; width: 100% !important; height: auto !important;');
+            }
+        });
+        
+        // Also ensure portfolio section is visible
+        const portfolioSection = document.querySelector('.portfolio');
+        if (portfolioSection) {
+            portfolioSection.setAttribute('style', 'display: block !important; visibility: visible !important; opacity: 1 !important;');
+        }
+        
+        const portfolioGrid = document.querySelector('.portfolio-grid');
+        if (portfolioGrid) {
+            portfolioGrid.setAttribute('style', 'display: grid !important; visibility: visible !important; opacity: 1 !important;');
+        }
+    }
+}
+
+// Run immediately and on resize
+handlePortfolioCards();
+window.addEventListener('resize', handlePortfolioCards);
 
 // Observe service categories
 const serviceCategories = document.querySelectorAll('.service-category, .experience-card');
@@ -192,6 +232,39 @@ document.addEventListener('DOMContentLoaded', () => {
     // Highlight first navigation item
     if (window.pageYOffset < 100) {
         navLinks[0].classList.add('active');
+    }
+    
+    // On mobile, ensure portfolio is visible immediately and stays visible
+    if (window.innerWidth <= 768) {
+        const portfolioCards = document.querySelectorAll('.project-card');
+        portfolioCards.forEach(card => {
+            // Remove fade-in class and prevent it from being re-added
+            card.classList.remove('fade-in');
+            card.classList.remove('visible');
+            // Use setAttribute to force inline styles
+            card.setAttribute('style', 'opacity: 1 !important; transform: none !important; visibility: visible !important; display: block !important; transition: none !important;');
+            
+            const img = card.querySelector('img');
+            if (img) {
+                img.setAttribute('style', 'opacity: 1 !important; visibility: visible !important; display: block !important; width: 100% !important; height: auto !important;');
+            }
+        });
+        
+        // Continuously check and fix if fade-in gets added back
+        setInterval(() => {
+            if (window.innerWidth <= 768) {
+                portfolioCards.forEach(card => {
+                    if (card.classList.contains('fade-in')) {
+                        card.classList.remove('fade-in');
+                        card.setAttribute('style', 'opacity: 1 !important; transform: none !important; visibility: visible !important; display: block !important; transition: none !important;');
+                    }
+                    const img = card.querySelector('img');
+                    if (img && img.style.opacity !== '1') {
+                        img.setAttribute('style', 'opacity: 1 !important; visibility: visible !important; display: block !important;');
+                    }
+                });
+            }
+        }, 100);
     }
 });
 
